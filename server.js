@@ -23,26 +23,26 @@ app.use(bodyParser.json());
 
 // POST route to send a ringing FCM notification
 app.post('/sendRingingNotification', async (req, res) => {
-    const { fcmToken, callerId } = req.body;
+    const { fcmToken, channel } = req.body;
 
     // Validate input
-    if (!fcmToken || !callerId) {
+    if (!fcmToken || !channel) {
         return res.status(400).send('❌ Missing fcmToken or callerId.');
     }
 
     console.log("📨 Sending notification to token:", fcmToken);
-    console.log("📞 Caller ID:", callerId);
+    console.log("📞 Caller ID:", channel);
 
     const message = {
         notification: {
             title: '📞 Incoming Video Call',
-            body: `You have an incoming call from ${callerId}`,
+            body: `You have an incoming call from ${channel}`,
         },
         android: {
             priority: "high", // Ensure prompt delivery
             notification: {
                 sound: "default", // Optional: Play sound
-                channelId: "video_call_channel", // Optional: Use proper notification channel on Android 8+
+                // channelId: "video_call_channel", // Optional: Use proper notification channel on Android 8+
             },
         },
         token: fcmToken,
